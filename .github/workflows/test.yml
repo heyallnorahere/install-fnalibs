@@ -1,0 +1,23 @@
+name: test
+on: [ push ]
+jobs:
+  test:
+    runs-on: ${{ matrix.os-name }}-latest
+    strategy:
+      matrix:
+        os-name: [ ubuntu, windows, macos ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.x
+      - name: install dependencies
+        if: ${{ matrix.os-name == 'ubuntu' }}
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake git build-essential
+      - name: test
+        shell: bash
+        run: |
+          python install_fnalibs.py

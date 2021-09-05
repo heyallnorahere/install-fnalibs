@@ -1,0 +1,4 @@
+__pycache__/
+fnalibs/**
+!fnalibs/CMakeLists.txt
+build/

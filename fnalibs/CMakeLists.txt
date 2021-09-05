@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.10)
+file(GLOB FNALIBS "${CMAKE_CURRENT_SOURCE_DIR}/*")
+foreach(LIB ${FNALIBS})
+    if(IS_DIRECTORY ${LIB})
+        add_subdirectory(${LIB})
+    endif()
+endforeach()
+set(FNALIBS_TARGET_DIRECTORY "The directory to copy binaries into" CACHE PATH ".")
+if(WIN32)
+    foreach(LIB ${FNALIBS})
+        list(APPEND OUTPUT_FILES "$<TARGET_FILE:${LIB}>")
+    endforeach()
+    add_custom_target(COPY_BINARIES ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${OUTPUT_FILES} ${FNALIBS_TARGET_DIRECTORY}
+        DEPENDS ${FNALIBS})
+endif()
