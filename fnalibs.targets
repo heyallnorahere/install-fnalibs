@@ -14,5 +14,7 @@
             Condition="!$([System.IO.File]::Exists('$(TargetDir)osx/libFAudio.0.dylib'))" />
         <Exec Command="ln $(TargetDir)osx/libFNA3D.$(FNAVersion).dylib $(TargetDir)osx/libFNA3D.0.dylib"
             Condition="!$([System.IO.File]::Exists('$(TargetDir)osx/libFNA3D.0.dylib'))" />
+        <Exec Command="ln $(TargetDir)osx/libSDL2-2.0.dylib $(TargetDir)osx/libSDL2-2.0.0.dylib"
+            Condition="!$([System.IO.File]::Exists('$(TargetDir)osx/libSDL2-2.0.0.dylib'))" />
     </Target>
 </Project>

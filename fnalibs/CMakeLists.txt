@@ -18,6 +18,6 @@ if(WIN32 OR PLATFORM_MACOSX)
     endforeach()
     add_custom_target(COPY_BINARIES ALL
         COMMAND ${CMAKE_COMMAND} -E make_directory ${FNALIBS_TARGET_DIRECTORY}
-        COMMAND ${CMAKE_COMMAND} -E copy ${OUTPUT_FILES} ${FNALIBS_TARGET_DIRECTORY}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${OUTPUT_FILES} ${FNALIBS_TARGET_DIRECTORY}
         DEPENDS ${FNALIBS})
 endif()
