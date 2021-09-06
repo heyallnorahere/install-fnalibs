@@ -4,13 +4,15 @@
         <PythonCommand Condition="'$(PythonCommand)' == ''">python</PythonCommand>
         <CMakeCommand Condition="'$(CMakeCommand)' == ''">cmake</CMakeCommand>
         <FNALibsDir Condition="'$(FNALibsDir)' == ''">$(OutputDir)</FNALibsDir>
-        <FNAVersion>0.21.09</FNAVersion>
+        <FNAVersion Condition="'$(FNAVersion)' == ''">0.21.09</FNAVersion>
     </PropertyGroup>
     <Target Name="CopyFNALibs" AfterTargets="Build" Condition="!$([MSBuild]::IsOSPlatform('Linux'))">
         <Exec Command="$(PythonCommand) '$(MSBuildThisFileDirectory)install_fnalibs.py' --cmake '$(CMakeCommand)'" WorkingDirectory="$(TargetDir)" />
     </Target>
     <Target Name="CreateLinks" AfterTargets="CopyFNALibs" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-        <Exec Command="ln $(TargetDir)osx/libFAudio.$(FNAVersion).dylib $(TargetDir)osx/libFAudio.0.dylib" />
-        <Exec Command="ln $(TargetDir)osx/libFNA3D.$(FNAVersion).dylib $(TargetDir)osx/libFNA3D.0.dylib" />
+        <Exec Command="ln $(TargetDir)osx/libFAudio.$(FNAVersion).dylib $(TargetDir)osx/libFAudio.0.dylib"
+            Condition="!$([System.IO.File]::Exists('$(TargetDir)osx/libFAudio.0.dylib'))" />
+        <Exec Command="ln $(TargetDir)osx/libFNA3D.$(FNAVersion).dylib $(TargetDir)osx/libFNA3D.0.dylib"
+            Condition="!$([System.IO.File]::Exists('$(TargetDir)osx/libFNA3D.0.dylib'))" />
     </Target>
 </Project>
