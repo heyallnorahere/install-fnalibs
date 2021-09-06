@@ -4,3 +4,4 @@ fnalibs/**
 build/
 *.dll
 *.dylib
+.DS_Store
