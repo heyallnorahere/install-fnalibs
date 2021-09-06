@@ -28,7 +28,8 @@ class LibraryDescriptor:
     def clone(self, fnalibs_dir: str):
         repo_path = path.join(fnalibs_dir, self.name)
         if path.isdir(repo_path):
-            shutil.rmtree(repo_path)
+            # this repository has already been cloned - lets skip
+            return True
         elif path.exists(repo_path):
             os.unlink(repo_path)
         args = [
