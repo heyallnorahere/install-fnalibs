@@ -7,7 +7,7 @@
         <FNAVersion Condition="'$(FNAVersion)' == ''">0.21.09</FNAVersion>
     </PropertyGroup>
     <Target Name="CopyFNALibs" AfterTargets="Build" Condition="!$([MSBuild]::IsOSPlatform('Linux'))">
-        <Exec Command="$(PythonCommand) '$(MSBuildThisFileDirectory)install_fnalibs.py' --cmake '$(CMakeCommand)'" WorkingDirectory="$(TargetDir)" />
+        <Exec Command='$(PythonCommand) "$(MSBuildThisFileDirectory)install_fnalibs.py" --cmake "$(CMakeCommand)"' WorkingDirectory="$(TargetDir)" />
     </Target>
     <Target Name="CreateLinks" AfterTargets="CopyFNALibs" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
         <Exec Command="ln $(TargetDir)osx/libFAudio.$(FNAVersion).dylib $(TargetDir)osx/libFAudio.0.dylib"
