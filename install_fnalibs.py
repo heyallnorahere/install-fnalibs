@@ -19,6 +19,7 @@ import os
 import os.path as path
 import argparse
 import shutil
+import sys
 
 class LibraryDescriptor:
     def __init__(self, name: str, remote: str):
@@ -38,6 +39,13 @@ class LibraryDescriptor:
             repo_path
         ]
         return subprocess.call(args) == 0
+def determine_target_directory():
+    if sys.platform.lower().startswith("darwin"):
+        return path.join(os.getcwd(), "osx")
+    elif sys.platform.lower().startswith("win32"):
+        return os.getcwd()
+    else:
+        return "no path"
 LIBS = [
     LibraryDescriptor("SDL2", "https://github.com/libsdl-org/SDL.git"),
     LibraryDescriptor("FNA3D", "https://github.com/FNA-XNA/FNA3D.git"),
@@ -50,7 +58,7 @@ CONFIGURE_OPTIONS = {
     "SDL_SHARED": "ON",
     "SDL_STATIC": "OFF",
     "BUILD_SHARED_LIBS": "ON",
-    "FNALIBS_TARGET_DIRECTORY": os.getcwd()
+    "FNALIBS_TARGET_DIRECTORY": determine_target_directory()
 }
 def configure(cmake="cmake"):
     args = [
@@ -99,7 +107,7 @@ def main(options):
         exit(1)
     else:
         print(f"Successfully built {BUILD_DIR}!")
-    if os.name.lower() == "posix":
+    if sys.platform.lower().startswith("linux"):
         print(f"Installing FNA libs...")
         if not install(cmake=options.cmake):
             print(f"Could not install FNA libs!")

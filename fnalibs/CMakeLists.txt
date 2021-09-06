@@ -10,12 +10,14 @@ foreach(LIB ${FNALIBS})
         set(SDL2_LIBRARIES SDL2::SDL2)
     endif()
 endforeach()
-if(WIN32)
+set(PLATFORM_MACOSX ${UNIX} AND NOT ${APPLE})
+if(WIN32 OR PLATFORM_MACOSX)
     message(STATUS "Adding copy target")
     foreach(LIB ${FNALIBS})
-        list(APPEND OUTPUT_FILES "$<TARGET_FILE:${LIB}>")
+        list(APPEND OUTPUT_FILES $<TARGET_FILE:${LIB}>)
     endforeach()
     add_custom_target(COPY_BINARIES ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${OUTPUT_FILES} ${FNALIBS_TARGET_DIRECTORY}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${FNALIBS_TARGET_DIRECTORY}
+        COMMAND ${CMAKE_COMMAND} -E copy ${OUTPUT_FILES} ${FNALIBS_TARGET_DIRECTORY}
         DEPENDS ${FNALIBS})
 endif()
